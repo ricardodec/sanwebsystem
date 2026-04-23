@@ -1,0 +1,98 @@
+# @baseUrl = http://localhost:3030
+@baseUrl = api.sanwebsystem.com.br
+@token = {{authenticate.response.body.token}}
+@refreshToken = {{authenticate.response.body.refreshToken}}
+
+###
+# @name authenticate
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "login": "teste2",
+    "password": "E1vVtbYgP#"
+}
+
+###
+# @name authenticate
+POST {{baseUrl}}/auth/refresh
+Authorization: 'Bearer {{token}}'
+Content-Type: application/json
+
+{
+    "refreshToken": "{{refreshToken}}"
+}
+
+###
+GET {{baseUrl}}/user/
+Authorization: 'Bearer {{token}}'
+
+###
+GET {{baseUrl}}/user/
+?limit=50
+&offset=0
+Authorization: 'Bearer {{token}}'
+
+###
+GET {{baseUrl}}/user/
+?offset=0
+Authorization: 'Bearer {{token}}'
+
+###
+GET {{baseUrl}}/user/a644c7cf-eb82-4d97-8223-6a47a6d1d2d6
+Authorization: 'Bearer {{token}}'
+
+###
+POST {{baseUrl}}/user/
+Authorization: 'Bearer {{token}}'
+Content-Type: application/json
+
+{
+    "login": "teste2",
+    "password": "E1vVtbYgP#",
+    "name": "Teste2",
+    "email": "teste2@example.com",
+    "isActive": true
+}
+
+###
+PATCH  {{baseUrl}}/user/0ca61382-c301-4724-8932-c75e9638b40f
+Authorization: 'Bearer {{token}}'
+Content-Type: application/json
+
+{
+    "name": "Teste3"
+}
+
+###
+DELETE {{baseUrl}}/user/0ca61382-c301-4724-8932-c75e9638b40f
+Authorization: 'Bearer {{token}}'
+
+###
+POST {{baseUrl}}/user/photo
+Authorization: 'Bearer {{token}}'
+Content-Type: multipart/form-data; boundary=----BoundaryDelimitatorHttp
+
+------BoundaryDelimitatorHttp
+Content-Disposition: form-data; name="file"; filename="abc.jpg"
+Content-Type: image/jpeg
+
+< ./dev/images/abc.jpg
+------BoundaryDelimitatorHttp--
+
+###
+POST {{baseUrl}}/user/photos
+Authorization: 'Bearer {{token}}'
+Content-Type: multipart/form-data; boundary=----BoundaryDelimitatorHttp
+
+------BoundaryDelimitatorHttp
+Content-Disposition: form-data; name="file"; filename="abc.jpg"
+Content-Type: image/jpeg
+
+< ./dev/images/abc.jpg
+
+Content-Disposition: form-data; name="file"; filename="cat.jpg"
+Content-Type: image/jpeg
+
+< ./dev/images/cat.jpg
+------BoundaryDelimitatorHttp--

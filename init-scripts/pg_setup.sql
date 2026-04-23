@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS sanweb_maindb;
+CREATE SCHEMA IF NOT EXISTS sanweb_db_0;

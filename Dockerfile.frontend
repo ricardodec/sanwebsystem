@@ -1,0 +1,23 @@
+FROM dhi.io/node:25-alpine3.23-dev
+
+# COPY ./sanwebsystem.frontend/package.json .
+
+WORKDIR /app
+COPY ./sanwebsystem.frontend/. .
+
+RUN npm install
+RUN npm run build
+
+RUN addgroup sanfrontend
+RUN adduser sanuser -G sanfrontend -D "sav2fxDkrYnc6"
+
+USER sanuser
+
+EXPOSE 3000/tcp
+
+ENV NODE_ENV=production
+ENV PORT=3000
+# ENV NEXT_PUBLIC_API_URL=https://api.sanwebsystem.com.br
+ENV NEXT_PUBLIC_API_URL=http://localhost:5212
+
+CMD ["npm", "start"]
