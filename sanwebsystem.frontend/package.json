@@ -1,0 +1,38 @@
+{
+  "name": "sanwebsystem-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "chart.js": "4.5.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "next": "16.2.2",
+    "primeflex": "4.0.0",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.7",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sanitize-html": "^2.17.2",
+    "typescript": "5.9.3",
+    "uuid": "^13.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.2",
+    "sass": "^1.97.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

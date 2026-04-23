@@ -1,0 +1,63 @@
+name: sanwebsystem
+
+services:
+  db:
+    container_name: sanwebsystem.db
+    image: mysql:latest
+    hostname: localhost
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_ROOT_PASSWORD:
+      # MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/db_root_password"
+      # MYSQL_DATABASE: "sanweb_maindb"
+      # MYSQL_USER: "sanweb_adm"
+      # MYSQL_PASSWORD:
+      # MYSQL_PASSWORD_FILE: "/run/secrets/db_password"
+    volumes:
+      - db_data:/var/lib/mysql
+    secrets:
+      - db_password
+      - db_root_password
+    networks:
+      - sanwebsystem-network
+
+  backend:
+    container_name: sanwebsystem.backend
+    depends_on:
+      - db
+    image: ricardodec/sanwebsystem.backend:v1.0.0
+    build:
+      dockerfile: ./Dockerfile.backend
+    ports:
+      - 5212:5212
+      - 7079:7079
+    networks:
+      - sanwebsystem-network
+
+  frontend:
+    container_name: sanwebsystem.frontend
+    depends_on:
+      - backend
+    image: ricardodec/sanwebsystem.frontend:v1.0.0
+    build:
+      dockerfile: ./Dockerfile.frontend
+    ports:
+      - 3000:3000
+    networks:
+      - sanwebsystem-network
+
+secrets:
+  db_password:
+    file: ./db_password.txt
+  db_root_password:
+    file: ./db_root_password.txt
+
+volumes:
+  db_data:
+  # pg_data:
+
+networks:
+  sanwebsystem-network:
+    driver: bridge

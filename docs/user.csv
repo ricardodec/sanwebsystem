@@ -1,0 +1,3 @@
+ID,login,data_senha,senha,salt,trocar_senha,nome,email,eh_controlador,tfa,tfa_tipo,tfa_key,tfa_key_data_hora,tfa_entry_key,tfa_qrcode_image_url,ativo,foto,foto_mimetype
+1,sanweb_adm,NULL,NGS5Ror+28eCHBoncNYz0NqV+qS5j9CjL+fjVwW97nY=,eVmpqFc30XtkxQCHMYTJFopzsblT00ZV593TYe9b7PQ=,0,Controlador,ricardodec@gmail.com,1,0,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL
+"2,ricardodec,NULL,GYIXBFtuLmROMN0srcFLoPsRfXZCPyj8L7FzAfdir3Y=,XPWFQ7y6OpKwbpHg93o0E+KJJKr3P1Avs9i5LmPMgYk=,1,""Ricardo de Castro"",ricardodec@gmail.com,0,0,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL"

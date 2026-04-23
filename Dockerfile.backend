@@ -1,0 +1,21 @@
+FROM dhi.io/node:25-alpine3.23-dev
+
+# COPY ./sanwebsystem.backend/package.json .
+
+WORKDIR /app
+COPY ./sanwebsystem.backend/. .
+
+RUN npm install
+RUN npm run build
+
+RUN addgroup sanbackend
+RUN adduser sanuser -G sanbackend -D "sav2fxDkrYnc6"
+
+USER sanuser
+
+EXPOSE 5212/tcp
+
+ENV NODE_ENV=production
+ENV PORT=5212
+
+CMD ["npm", "start"]
