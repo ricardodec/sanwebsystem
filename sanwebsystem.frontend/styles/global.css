@@ -1,0 +1,56 @@
+.scroll-to-top {
+    display: none; /* Esconde a seta por padrão */
+    position: fixed; /* Fixa a posição na tela */
+    bottom: 20px; /* 20px do fundo */
+    right: 30px; /* 30px da direita */
+    z-index: 99; /* Garante que fique acima de outros elementos */
+    border: none; /* Remove a borda padrão do botão */
+    outline: none; /* Remove o contorno ao focar */
+    background-color: #555; /* Cor de fundo cinza */
+    color: white; /* Cor do texto (seta) branca */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    padding: 10px 15px; /* Preenchimento interno */
+    border-radius: 5px; /* Cantos arredondados */
+    font-size: 12px; /* Tamanho da fonte para a seta */
+    transition: background-color 0.3s ease; /* Transição suave na cor de fundo */
+}
+
+.scroll-to-top:hover {
+    background-color: #777; /* Cor de fundo mais escura ao passar o mouse */
+}
+
+.loading-container {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999997;
+    background: black;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    color: white;
+    padding-top: 25%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out !important;
+}
+
+.fade-in {
+    opacity: 0.50 !important;
+    filter: alpha(opacity = 50);
+}
+
+.fade-out {
+    opacity: 0 !important;
+    filter: alpha(opacity = 0);
+}
+
+.p-top-menu {
+    background-color: transparent !important; /* Remove o fundo */
+    border: none !important; /* Remove a borda */
+    box-shadow: none !important; /* Remove a sombra */
+}

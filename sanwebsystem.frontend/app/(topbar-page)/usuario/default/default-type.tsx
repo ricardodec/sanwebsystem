@@ -1,0 +1,20 @@
+export const formUsuarioDefault: Auth.ICadastroUsuario = {
+    isErro: false,
+    id: 0,
+    parceiroId: 0,
+    login: { isAlert: false, value: '', message: '' },
+    senha: { isAlert: false, value: '', message: '' },
+    nome: { isAlert: false, value: '', message: '' },
+    email: { isAlert: false, value: '', message: '' },
+    ehControlador: { isAlert: false, value: false, message: '' },
+    ativo: { isAlert: true, value: false, message: '' },
+    tfaKey: null,
+    tfaEntryKey: null,
+    tfaQrCodeImageUrl: null,
+    tfa: { isAlert: false, value: false, message: '' },
+    tfaTipo: { isAlert: false, value: 0, message: '' },
+    foto: { isAlert: false, value: null, message: '' },
+    fotoMimeType: { isAlert: false, value: null, message: '' },
+    enviarEmailSenha: false,
+    tfaTipoLista: []
+};
