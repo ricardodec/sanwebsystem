@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CryptService } from '../common/hashing/crypt.service';
 import { HashingService } from '../common/hashing/hashing.service';
+import { TwoFactorService } from '../common/tfa/tfa.service';
 import { HistoricoSenha } from '../db/entities/historico_senha.entity';
 import { Usuario } from '../db/entities/usuario.entity';
 import { AuthController } from './auth.controller';
@@ -24,7 +25,8 @@ import jwtConfig from './config/jwt.config';
             useClass: CryptService,
         },
         AuthService,
+        TwoFactorService,
     ],
-    exports: [HashingService, JwtModule, ConfigModule],
+    exports: [HashingService, JwtModule, ConfigModule, TwoFactorService],
 })
 export class AuthModule {}

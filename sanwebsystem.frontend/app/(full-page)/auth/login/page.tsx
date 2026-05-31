@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useContext, useState, useEffect } from 'react';
+import { redirectIfAuthenticated } from '@actions/authenticate';
+import fetchService from '@actions/fetch';
+import { AuthContext, AuthType } from '@context/auth';
+import { LayoutContext } from '@layout/context/layoutcontext';
+import { Auth } from '@types';
+import Loading from '@ui/loading';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Message } from 'primereact/message';
 import { InputText } from 'primereact/inputtext';
+import { Message } from 'primereact/message';
+import { Password } from 'primereact/password';
 import { classNames } from 'primereact/utils';
-import { LayoutContext } from '@layout/context/layoutcontext';
-import Loading from '@ui/loading';
-import { Auth } from '@types';
-import fetchService from '@actions/fetch';
-import { redirectIfAuthenticated } from '@actions/authenticate';
-import { AuthContext, AuthType } from '@context/auth';
+import React, { useContext, useEffect, useState } from 'react';
 
 const LoginPage = () => {
     interface IAuthLoginRequest {
@@ -22,9 +22,10 @@ const LoginPage = () => {
     }
 
     interface IAuthLoginResponse {
+        token: string | undefined;
+        refreshToken: string | undefined;
         signedUser: Auth.ISignedUser;
-        token: string | null;
-        msgErro: string | null;
+        msgErro: string | undefined;
     }
 
     useEffect(() => {

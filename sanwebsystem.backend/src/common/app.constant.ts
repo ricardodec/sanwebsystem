@@ -6,3 +6,6 @@ export const ROUTE_POLICY_KEY = 'ROUTE_POLICY_KEY';
 export const DEVELOPMENT = 'development';
 export const STAGE = 'stage';
 export const PRODUCTION = 'production';
+export const NOME_EMPRESA = 'SAN Websystem';
+export const NOME_SISTEMA = 'sanwebsystem.com.br';
+export const TAMANHO_CHAVE_TFA = 6;

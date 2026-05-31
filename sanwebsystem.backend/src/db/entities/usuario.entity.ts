@@ -11,7 +11,7 @@ import { ParceiroUsuario } from './parceiro_usuario.entity';
 
 export enum TfaTypeRole {
     NAO_APLICADO = 0,
-    GOOGLE = 1,
+    AUTHENTICATOR = 1,
     EMAIL = 2,
 }
 

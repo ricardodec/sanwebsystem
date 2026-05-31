@@ -1,5 +1,4 @@
 declare namespace Auth {
-
     interface ILoginUser {
         login: string;
         nome: string;
@@ -25,8 +24,7 @@ declare namespace Auth {
     }
 
     interface IGeraChaveTFA {
-        isErro: boolean;
-        loginVo: Auth.ISignedUser;
+        signedUser: Auth.ISignedUser;
         login: string;
         email: ObjectForm;
     }
@@ -40,7 +38,7 @@ declare namespace Auth {
     }
 
     type Usuario = IUsuario;
-    
+
     interface ICadastroUsuario {
         isErro: boolean;
         id: number;
@@ -67,5 +65,5 @@ declare namespace Auth {
         signedUser: Auth.ISignedUser | null;
         parceiro: Control.IParceiro | null;
         token: string | null;
-    }
+    };
 }

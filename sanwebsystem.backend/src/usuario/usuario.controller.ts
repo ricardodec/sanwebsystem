@@ -45,7 +45,7 @@ import { ParseUuidPipe } from '../common/pipes/parse-uuid-pipe';
 import { SetRoutePolicy } from './../common/decorators/set-route-policy.decorator';
 import { ResponseUsuarioDto } from './dto/response-usuario.dto';
 import { UsuarioDto } from './dto/usuario.dto';
-import { UserService } from './usuario.service';
+import { UsuarioService } from './usuario.service';
 
 @Controller('user')
 @UseGuards(AuthGuard, RoutePolicyGuard)
@@ -54,7 +54,7 @@ import { UserService } from './usuario.service';
 @ApiTags('Users')
 @ApiBearerAuth()
 export class UsuarioController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly usuarioService: UsuarioService) {}
 
     @Get()
     @SetRoutePolicy(RoutePolicyEnum.userfindAll)
@@ -79,14 +79,14 @@ export class UsuarioController {
     async findAll(
         @Query() paginationDto?: PaginationDto,
     ): Promise<ResponseUsuarioDto[]> {
-        return await this.userService.findAll(paginationDto);
+        return await this.usuarioService.findAll(paginationDto);
     }
 
     @Get(':id')
     async findOne(
         @Param('id') id: number,
     ): Promise<string | ResponseUsuarioDto> {
-        const user = await this.userService.findOne(id);
+        const user = await this.usuarioService.findOne(id);
 
         if (user) return user;
 
@@ -110,7 +110,7 @@ export class UsuarioController {
         type: Error,
     })
     async create(@Body() userDto: UsuarioDto): Promise<ResponseUsuarioDto> {
-        return await this.userService.create(userDto);
+        return await this.usuarioService.create(userDto);
     }
 
     @Patch(':id')
@@ -120,7 +120,7 @@ export class UsuarioController {
         userDto: UsuarioDto,
     ): Promise<ResponseUsuarioDto | string> {
         const updatedBody = { ...userDto, id };
-        const retorno = await this.userService.update(updatedBody);
+        const retorno = await this.usuarioService.update(updatedBody);
 
         if (typeof retorno === 'string') {
             throw new NotFoundException('Erro ao atualizar o usuário');
@@ -133,7 +133,7 @@ export class UsuarioController {
     async update(
         @Body() userDto: UsuarioDto,
     ): Promise<ResponseUsuarioDto | string> {
-        return await this.userService.update(userDto);
+        return await this.usuarioService.update(userDto);
     }
 
     @Delete(':id')
@@ -142,7 +142,7 @@ export class UsuarioController {
         @DataParam(REQUEST_TOKEN_PAYLOAD_KEY) tokenPayLoadDto: TokenPayloadDto,
     ): Promise<string> {
         return (
-            (await this.userService.remove(id, tokenPayLoadDto)) ??
+            (await this.usuarioService.remove(id, tokenPayLoadDto)) ??
             'Usuário removido com sucesso'
         );
     }
@@ -172,10 +172,8 @@ export class UsuarioController {
         file: Express.Multer.File,
         @DataParam(REQUEST_TOKEN_PAYLOAD_KEY) tokenPayLoadDto: TokenPayloadDto,
     ) {
-        const { fileName, fileFullPath } = await this.userService.uploadPhoto(
-            file,
-            tokenPayLoadDto.sub,
-        );
+        const { fileName, fileFullPath } =
+            await this.usuarioService.uploadPhoto(file, tokenPayLoadDto.sub);
 
         return {
             fileName,
@@ -215,7 +213,7 @@ export class UsuarioController {
 
         for (const file of files) {
             const { fileName, fileFullPath } =
-                await this.userService.uploadPhoto(file, randomUUID());
+                await this.usuarioService.uploadPhoto(file, randomUUID());
 
             filesReturned.push({
                 fileName,

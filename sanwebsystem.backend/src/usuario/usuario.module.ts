@@ -12,8 +12,8 @@ import { HashingService } from '../common/hashing/hashing.service';
 import { RegexFactory } from '../common/regex/regex-factory';
 import { HistoricoSenha } from '../db/entities/historico_senha.entity';
 import { Usuario } from '../db/entities/usuario.entity';
-import { UserController } from './usuario.controller';
-import { UserService } from './usuario.service';
+import { UsuarioController } from './usuario.controller';
+import { UsuarioService } from './usuario.service';
 
 @Module({
     imports: [
@@ -21,9 +21,9 @@ import { UserService } from './usuario.service';
         ConfigModule.forFeature(jwtConfig),
         JwtModule.registerAsync(jwtConfig.asProvider()),
     ],
-    controllers: [UserController],
+    controllers: [UsuarioController],
     providers: [
-        UserService,
+        UsuarioService,
         {
             provide: HashingService,
             useClass: CryptService,
@@ -40,4 +40,4 @@ import { UserService } from './usuario.service';
     ],
     exports: [HashingService],
 })
-export class UserModule {}
+export class UsuarioModule {}

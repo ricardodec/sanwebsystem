@@ -10,11 +10,14 @@ export class Parametro {
     })
     id: number = 0;
 
-    @Column({ name: 'ciclo_senha', type: 'boolean' })
-    cicloSenha: boolean = false;
+    @Column({ name: 'ciclo_senha', type: 'integer' })
+    cicloSenha: number = 0;
 
     @Column({ name: 'num_repeticao_senha', type: 'integer' })
     numRepeticaoSenha: number = 0;
+
+    @Column({ name: 'min_tamanho_senha', type: 'integer' })
+    minTamanhoSenha: number = 0;
 
     @Column({ name: 'caracter_minusculo', type: 'boolean' })
     caracterMinusculo: boolean = false;

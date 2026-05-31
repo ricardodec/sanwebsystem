@@ -1,5 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { SignedUserDto } from '../auth/dto/signeduser.dto';
+import { NOME_EMPRESA, NOME_SISTEMA } from '../common/app.constant';
 
 @Injectable()
 export class AppService {
@@ -9,56 +11,26 @@ export class AppService {
         return 'Hello World!';
     }
 
-    sendEmailExample(): void {
-        this.mailerService
-            .sendMail({
-                to: 'test@nestjs.com', // list of receivers
-                from: 'noreply@nestjs.com', // sender address
-                subject: 'Testing Nest MailerModule ✔', // Subject line
-                text: 'welcome', // plaintext body
-                html: '<b>welcome</b>', // HTML body content
-            })
-            .then((success) => {
-                console.log(success);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
+    sendTfaEmail(usuario: SignedUserDto): void {
+        const body =
+            '<p>' +
+            'Prezado, ' +
+            usuario.nome +
+            '.<br/><br/>' +
+            'Segue código de confirmação de acesso ao nosso sistema.<br/>' +
+            'Código: ' +
+            usuario.tfaKey +
+            '<br/><br/>' +
+            'Att,<br/>' +
+            NOME_EMPRESA +
+            '</p>';
 
-    sendEmailExample2(): void {
         this.mailerService
             .sendMail({
-                to: 'test@nestjs.com',
-                from: 'noreply@nestjs.com',
-                subject: 'Testing Nest Mailermodule with template ✔',
-                template: 'index', // The `.pug` or `.hbs` extension is appended automatically.
-                context: {
-                    // Data to be sent to template engine.
-                    code: 'cf1a3f828287',
-                    username: 'john doe',
-                },
-            })
-            .then((success) => {
-                console.log(success);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
-    sendEmailExample3(): void {
-        this.mailerService
-            .sendMail({
-                to: 'test@nestjs.com',
-                from: 'noreply@nestjs.com',
-                subject: 'Testing Nest Mailermodule with template ✔',
-                template: '/index', // The `.pug` or `.hbs` extension is appended automatically.
-                context: {
-                    // Data to be sent to template engine.
-                    code: 'cf1a3f828287',
-                    username: 'john doe',
-                },
+                to: usuario.email,
+                from: 'admin@sanwebsystem.com.br',
+                subject: NOME_SISTEMA + ' - Código de autenticação',
+                html: body,
             })
             .then((success) => {
                 console.log(success);

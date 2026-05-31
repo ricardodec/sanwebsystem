@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Toast } from 'primereact/toast';
-import { Divider } from 'primereact/divider';
-import { classNames } from 'primereact/utils';
-import { LayoutContext } from '@layout/context/layoutcontext';
-import Loading from '@ui/loading';
-import { ObjectForm } from '@types';
 import fetchService from '@actions/fetch';
 import { AuthContext } from '@context/auth';
+import { LayoutContext } from '@layout/context/layoutcontext';
+import { ObjectForm } from '@types';
+import Loading from '@ui/loading';
+import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
+import { Divider } from 'primereact/divider';
+import { Password } from 'primereact/password';
+import { Toast } from 'primereact/toast';
+import { classNames } from 'primereact/utils';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const TrocaSenhaPage = () => {
     interface IAuthTrocaSenha {
@@ -21,6 +21,13 @@ const TrocaSenhaPage = () => {
         senha: ObjectForm<string>;
         novaSenha: ObjectForm<string>;
         confirmaSenha: ObjectForm<string>;
+    }
+
+    interface IResponseTrocaSenha {
+        isErro: boolean | undefined;
+        msgSenha: string | undefined;
+        msgNovaSenha: string | undefined;
+        msgConfirmaSenha: string | undefined;
     }
 
     const { auth } = useContext(AuthContext);
@@ -61,15 +68,44 @@ const TrocaSenhaPage = () => {
             url: `${process.env.NEXT_PUBLIC_API_URL}/api/auth/trocarsenha`,
             method: `POST`,
             token: auth.token as string,
-            body: JSON.stringify(form),
+            body: JSON.stringify({
+                login: form.login,
+                senha: form.senha.value,
+                novaSenha: form.novaSenha.value,
+                confirmaSenha: form.confirmaSenha.value,
+            }),
         })
-            .then((data: IAuthTrocaSenha | null) => {
+            .then((data: IResponseTrocaSenha | null) => {
                 if (data == null) {
                     return;
                 }
 
                 if (data.isErro === true) {
-                    setForm(data);
+                    setForm({
+                        ...form,
+                        isErro: true,
+                        senha: {
+                            ...form.senha,
+                            message: data.msgSenha ?? '',
+                            isAlert:
+                                data.msgSenha !== undefined &&
+                                data.msgSenha.length > 0,
+                        },
+                        novaSenha: {
+                            ...form.novaSenha,
+                            message: data.msgNovaSenha ?? '',
+                            isAlert:
+                                data.msgNovaSenha !== undefined &&
+                                data.msgNovaSenha.length > 0,
+                        },
+                        confirmaSenha: {
+                            ...form.confirmaSenha,
+                            message: data.msgConfirmaSenha ?? '',
+                            isAlert:
+                                data.msgConfirmaSenha !== undefined &&
+                                data.msgConfirmaSenha.length > 0,
+                        },
+                    });
                 } else {
                     setForm(formDefault);
                     showToast();

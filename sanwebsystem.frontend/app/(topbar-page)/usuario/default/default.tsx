@@ -1,14 +1,14 @@
 'use client';
 
-import React from 'react';
+import { TFATipoEnum } from '@enums';
+import { FileUploadUI } from '@ui/files';
+import { isEmailValid } from '@ui/validations';
 import Image from 'next/image';
-import { Panel } from 'primereact/panel';
-import { InputText } from 'primereact/inputtext';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputSwitch, InputSwitchChangeEvent } from 'primereact/inputswitch';
-import { TFATipoEnum } from '@enums';
-import { isEmailValid } from '@ui/validations';
-import { FileUploadUI } from '@ui/files';
+import { InputText } from 'primereact/inputtext';
+import { Panel } from 'primereact/panel';
+import React from 'react';
 
 interface UsuarioEditProps {
     ref?: React.Ref<HTMLElement>;
@@ -17,17 +17,21 @@ interface UsuarioEditProps {
 }
 
 const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
-    const onUpload = (fileName: string, type: string, result: string | null) => {
+    const onUpload = (
+        fileName: string,
+        type: string,
+        result: string | null,
+    ) => {
         setForm({
             ...form,
             foto: {
                 ...form.foto,
-                value: result
+                value: result,
             },
             fotoMimeType: {
                 ...form.fotoMimeType,
-                value: type
-            }
+                value: type,
+            },
         });
     };
 
@@ -36,12 +40,12 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
             ...form,
             foto: {
                 ...form.foto,
-                value: null
+                value: null,
             },
             fotoMimeType: {
                 ...form.fotoMimeType,
-                value: null
-            }
+                value: null,
+            },
         });
     };
 
@@ -49,7 +53,10 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
         return (
             <div className="formgrid grid">
                 <div className="col-offset-4 col-4">
-                    <Image src={form.tfaQrCodeImageUrl ?? ''} alt="QRCode Authenticator" />
+                    <Image
+                        src={form.tfaQrCodeImageUrl ?? ''}
+                        alt="QRCode Authenticator"
+                    />
                 </div>
 
                 <div className="col-12">
@@ -72,17 +79,35 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
                         Login:
                     </label>
                     <InputText
-                        ref={form.id === 0 ? (ref as React.Ref<HTMLInputElement> | undefined) : undefined}
+                        ref={
+                            form.id === 0
+                                ? (ref as
+                                      | React.Ref<HTMLInputElement>
+                                      | undefined)
+                                : undefined
+                        }
                         id="login"
                         type="text"
                         value={form.login.value as string}
                         invalid={form.login.isAlert}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, login: { ...form.login, value: e.target.value.toLowerCase() } })}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setForm({
+                                ...form,
+                                login: {
+                                    ...form.login,
+                                    value: e.target.value.toLowerCase(),
+                                },
+                            })
+                        }
                         className="w-full text-base"
                         disabled={form.id !== 0}
                         required
                     />
-                    {form.login.isAlert && <small className="text-red-500">&nbsp;{form.login.message}</small>}
+                    {form.login.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.login.message}
+                        </small>
+                    )}
                 </div>
 
                 <div className="field col-4">
@@ -90,16 +115,31 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
                         Nome:
                     </label>
                     <InputText
-                        ref={form.id === 0 ? undefined : (ref as React.Ref<HTMLInputElement> | undefined)}
+                        ref={
+                            form.id === 0
+                                ? undefined
+                                : (ref as
+                                      | React.Ref<HTMLInputElement>
+                                      | undefined)
+                        }
                         id="nome"
                         type="text"
                         value={form.nome.value as string}
                         invalid={form.nome.isAlert}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, nome: { ...form.nome, value: e.target.value } })}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setForm({
+                                ...form,
+                                nome: { ...form.nome, value: e.target.value },
+                            })
+                        }
                         className="w-full text-base"
                         required
                     />
-                    {form.nome.isAlert && <small className="text-red-500">&nbsp;{form.nome.message}</small>}
+                    {form.nome.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.nome.message}
+                        </small>
+                    )}
                 </div>
 
                 <div className="field col-5">
@@ -110,12 +150,24 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
                         id="email"
                         type="email"
                         value={form.email.value as string}
-                        invalid={form.email.isAlert || !isEmailValid(form.email.value as string)}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, email: { ...form.email, value: e.target.value } })}
+                        invalid={
+                            form.email.isAlert ||
+                            !isEmailValid(form.email.value as string)
+                        }
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setForm({
+                                ...form,
+                                email: { ...form.email, value: e.target.value },
+                            })
+                        }
                         className="w-full text-base"
                         required
                     />
-                    {form.email.isAlert && <small className="text-red-500">&nbsp;{form.email.message}</small>}
+                    {form.email.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.email.message}
+                        </small>
+                    )}
                 </div>
             </div>
 
@@ -125,8 +177,22 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
                         TFA:
                     </label>
                     <br />
-                    <InputSwitch id="tfa" className="mt-2" checked={form.tfa.value as boolean} onChange={(e: InputSwitchChangeEvent) => setForm({ ...form, tfa: { ...form.tfa, value: e.target.value } })} />
-                    {form.tfa.isAlert && <small className="text-red-500">&nbsp;{form.tfa.message}</small>}
+                    <InputSwitch
+                        id="tfa"
+                        className="mt-2"
+                        checked={form.tfa.value as boolean}
+                        onChange={(e: InputSwitchChangeEvent) =>
+                            setForm({
+                                ...form,
+                                tfa: { ...form.tfa, value: e.target.value },
+                            })
+                        }
+                    />
+                    {form.tfa.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.tfa.message}
+                        </small>
+                    )}
                 </div>
 
                 {form.tfa.value === true && (
@@ -138,27 +204,64 @@ const UsuarioDefault = ({ ref, form, setForm }: UsuarioEditProps) => {
                             id="tfaTipo"
                             options={form.tfaTipoLista}
                             value={form.tfaTipo.value.toString()}
-                            onChange={(e: DropdownChangeEvent) => setForm({ ...form, tfaTipo: { ...form.tfaTipo, value: Number(e.target.value) } })}
+                            onChange={(e: DropdownChangeEvent) =>
+                                setForm({
+                                    ...form,
+                                    tfaTipo: {
+                                        ...form.tfaTipo,
+                                        value: Number(e.target.value),
+                                    },
+                                })
+                            }
                             optionValue="id"
                             optionLabel="descricao"
-                            defaultValue={form.tfaTipoLista.length === 0 ? 0 : form.tfaTipoLista[0].id}
+                            defaultValue={
+                                form.tfaTipoLista.length === 0
+                                    ? 0
+                                    : form.tfaTipoLista[0].id
+                            }
                             className="w-full text-base"
                         />
-                        {form.tfaTipo.isAlert && <small className="text-red-500">&nbsp;{form.tfaTipo.message}</small>}
+                        {form.tfaTipo.isAlert && (
+                            <small className="text-red-500">
+                                &nbsp;{form.tfaTipo.message}
+                            </small>
+                        )}
                     </div>
                 )}
             </div>
 
-            {form.tfa.value === true && form.tfaTipo.value === TFATipoEnum.Google.value && form.tfaQrCodeImageUrl !== null && <Panel header="QRCode no Google Authenticator">{getImageQrCode()}</Panel>}
+            {form.tfa.value === true &&
+                form.tfaTipo.value === TFATipoEnum.Authenticator.value &&
+                form.tfaQrCodeImageUrl !== null && (
+                    <Panel header="QRCode no Google Authenticator">
+                        {getImageQrCode()}
+                    </Panel>
+                )}
 
             <div className="formgrid grid">
                 <div className="field col-12">
                     <label htmlFor="foto" className="font-bold">
                         Foto:
                     </label>
-                    <FileUploadUI id="foto" file={form.foto.value} mimeType={form.fotoMimeType.value} multiple={false} onUpload={onUpload} onClear={onClear} />
-                    {form.foto.isAlert && <small className="text-red-500">&nbsp;{form.foto.message}</small>}
-                    {form.fotoMimeType.isAlert && <small className="text-red-500">&nbsp;{form.fotoMimeType.message}</small>}
+                    <FileUploadUI
+                        id="foto"
+                        file={form.foto.value}
+                        mimeType={form.fotoMimeType.value}
+                        multiple={false}
+                        onUpload={onUpload}
+                        onClear={onClear}
+                    />
+                    {form.foto.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.foto.message}
+                        </small>
+                    )}
+                    {form.fotoMimeType.isAlert && (
+                        <small className="text-red-500">
+                            &nbsp;{form.fotoMimeType.message}
+                        </small>
+                    )}
                 </div>
             </div>
         </>

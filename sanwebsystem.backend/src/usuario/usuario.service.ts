@@ -23,7 +23,7 @@ import { ResponseUsuarioDto } from './dto/response-usuario.dto';
 import { UsuarioDto } from './dto/usuario.dto';
 
 @Injectable()
-export class UserService {
+export class UsuarioService {
     constructor(
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,

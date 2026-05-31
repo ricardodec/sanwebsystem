@@ -1,92 +1,76 @@
-import { faker } from '@faker-js/faker';
+import { HashingService } from '@/src/common/hashing/hashing.service';
+import { HistoricoSenha } from '@/src/db/entities/historico_senha.entity';
+import { Usuario } from '@/src/db/entities/usuario.entity';
+import { UsuarioModule } from '@/src/usuario/usuario.module';
+import { SnowflakeId } from '@akashrajpurohit/snowflake-id';
 import { AppConfig, AppConfigType } from '@common/app.config';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Faker, pt_BR } from '@faker-js/faker';
 import { INestApplication } from '@nestjs/common';
-import { App } from 'supertest/types';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '../src/auth/auth.module';
-import { UserModule } from '../src/user/user.module';
-import { UserService } from '../src/user/user.service';
-import { UserDto } from '../src/user/dto/user.dto';
-import { randomUUID } from 'crypto';
+import { App } from 'supertest/types';
+import { Repository } from 'typeorm';
+import { createUsuario } from './create-usuario.faker';
 
 export const getApp = async (): Promise<INestApplication<App>> => {
-  const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [
-      TypeOrmModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => {
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-          const { database } = new AppConfig(
-            configService,
-          ).getParams() as AppConfigType;
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+        imports: [
+            TypeOrmModule.forRootAsync({
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: (configService: ConfigService) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+                    const { database } = new AppConfig(
+                        configService,
+                    ).getParams() as AppConfigType;
 
-          return {
-            type: 'postgres',
-            host: database.host,
-            port: database.port,
-            username: database.username,
-            password: database.password,
-            database: database.name,
-            autoLoadEntities: database.autoLoadEntities,
-            synchronize: database.synchronize,
-          };
-        },
-      }),
-      AuthModule,
-      UserModule,
-    ],
-  }).compile();
+                    return {
+                        type: 'mysql',
+                        host: database.host,
+                        port: database.port,
+                        username: database.username,
+                        password: database.password,
+                        database: database.name,
+                        autoLoadEntities: database.autoLoadEntities,
+                        synchronize: database.synchronize,
+                    };
+                },
+            }),
+            UsuarioModule,
+        ],
+    }).compile();
 
-  return moduleFixture.createNestApplication();
-};
-
-const generateUsers = async (userService: UserService) => {
-  for (let i: number = 0; i < 20; i++) {
-    const firstName = faker.person.firstName();
-    const lastName = faker.person.lastName();
-
-    const fullName = faker.person.fullName({
-      firstName: firstName,
-      lastName: lastName,
-    });
-
-    const email = faker.internet
-      .email({
-        firstName: firstName,
-        lastName: lastName,
-      })
-      .toLowerCase();
-
-    const login = faker.internet
-      .username({
-        firstName: firstName,
-        lastName: lastName,
-      })
-      .toLowerCase();
-
-    const userDto = {
-      id: randomUUID(),
-      login: login,
-      password: '123456',
-      name: fullName,
-      email: email,
-      active: true,
-    } as UserDto;
-
-    await userService.create(userDto);
-  }
+    return moduleFixture.createNestApplication();
 };
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async () => {
-  const app = await getApp();
-  await app.init();
+    const faker = new Faker({
+        locale: [pt_BR],
+    });
 
-  const userService = app.get(UserService);
-  await generateUsers(userService);
+    const app = await getApp();
+    await app.init();
 
-  await app.close();
+    const usuarioRepository = app.get(Repository<Usuario>);
+    const historicoSenhaRepository = app.get(Repository<HistoricoSenha>);
+    const hashingService = app.get(HashingService);
+
+    for (let i: number = 0; i < 20; i++) {
+        const usuario = await usuarioRepository.save(
+            await createUsuario(faker, hashingService),
+        );
+
+        await historicoSenhaRepository.save({
+            id: Number(SnowflakeId().generate()),
+            usuarioId: usuario.id,
+            dataSenha: usuario.dataSenha,
+            senha: usuario.senha,
+            salt: usuario.salt,
+            usuario: Promise.resolve(usuario),
+        } as HistoricoSenha);
+    }
+
+    await app.close();
 })();

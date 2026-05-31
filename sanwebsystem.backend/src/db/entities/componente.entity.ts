@@ -21,7 +21,7 @@ export class Componente {
     id: number = 0;
 
     @Column({ name: 'superior_id', type: 'bigint' })
-    superiorId?: number;
+    superiorId?: number | null = null;
 
     @Column({ name: 'ambiente_id', type: 'bigint' })
     ambienteId: number = 0;

@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import { redirectIfAuthenticated } from '@actions/authenticate';
+import fetchService from '@actions/fetch';
+import { AuthContext, AuthType } from '@context/auth';
+import { TFATipoEnum } from '@enums';
+import { LayoutContext } from '@layout/context/layoutcontext';
+import Loading from '@ui/loading';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import { InputOtp } from 'primereact/inputotp';
+import { InputText } from 'primereact/inputtext';
 import { Toast, ToastMessage } from 'primereact/toast';
 import { classNames } from 'primereact/utils';
-import { LayoutContext } from '@layout/context/layoutcontext';
-import Loading from '@ui/loading';
-import { TFATipoEnum } from '@enums';
-import fetchService from '@actions/fetch';
-import { redirectIfAuthenticated } from '@actions/authenticate';
-import { AuthContext, AuthType } from '@context/auth';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 const TFAValidaPage = () => {
     const { auth, dispatch, isAuthenticated } = useContext(AuthContext);
@@ -34,8 +34,7 @@ const TFAValidaPage = () => {
     };
 
     const chaveDefault: Auth.IGeraChaveTFA = {
-        isErro: false,
-        loginVo: auth.signedUser,
+        signedUser: auth.signedUser,
         login: auth.signedUser?.login ?? '',
         email: { value: '', message: '', isAlert: false },
     };
@@ -53,13 +52,16 @@ const TFAValidaPage = () => {
         fetchService({
             url: `${process.env.NEXT_PUBLIC_API_URL}/api/auth/tfa/generatecode`,
             method: `POST`,
-            body: JSON.stringify(chave),
+            body: JSON.stringify({
+                login: auth.signedUser?.login ?? '',
+                email: chave.email.value?.toString() ?? '',
+            }),
         })
             .then((data: Auth.IGeraChaveTFA | null) => {
-                if (data != null && !data.isErro) {
+                if (data != null && !data.email.isAlert) {
                     dispatch({
                         type: AuthType.SIGNEDUSER,
-                        payload: data.loginVo,
+                        payload: data.signedUser,
                     });
                     setChave(data);
                     showToast({
@@ -98,7 +100,7 @@ const TFAValidaPage = () => {
 
                 setChave({
                     ...chave,
-                    loginVo: data,
+                    signedUser: data,
                     login: data.login,
                 });
 
@@ -244,7 +246,7 @@ const TFAValidaPage = () => {
                                         <span className="text-900 text-lg font-semibold">
                                             Prencha código{' '}
                                             {auth.signedUser?.tfaTipo ==
-                                            TFATipoEnum.Google.value
+                                            TFATipoEnum.Authenticator.value
                                                 ? ' apresentado pelo Authenticator'
                                                 : ' enviado para seu e-mail'}
                                             .
@@ -286,7 +288,7 @@ const TFAValidaPage = () => {
                                         )}
 
                                         {auth.signedUser.tfaTipo ==
-                                            TFATipoEnum.Google.value && (
+                                            TFATipoEnum.Authenticator.value && (
                                             <Button
                                                 type="button"
                                                 label="Clique aqui se precisar recompor seu acesso em dois fatores."
