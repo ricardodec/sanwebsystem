@@ -47,6 +47,9 @@ export class Componente {
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
+    @Column({ name: 'geral', type: 'boolean', default: true })
+    geral: boolean = true;
+
     @OneToOne(() => Componente, (componente) => componente.superior)
     @JoinColumn({ name: 'superior_id', referencedColumnName: 'id' })
     superior?: Promise<Componente>;

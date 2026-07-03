@@ -8,7 +8,7 @@ const dataSource = new DataSource({
     password: 'MHSunAt!Qx',
     // database: 'sanweb_maindb',
     autoLoadEntities: true,
-    synchronize: false,
+    synchronize: true,
     entities: [`${process.cwd()}/src/db/entities/**/*{.js,.ts}`],
     seeds: [`${process.cwd()}/src/db/seeds/**/*{.ts,.js}`],
     migrations: [`${process.cwd()}/src/db/migrations/**/*{.js,.ts}`],
