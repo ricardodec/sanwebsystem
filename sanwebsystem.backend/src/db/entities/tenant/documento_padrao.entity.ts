@@ -8,7 +8,7 @@ export class DocumentoPadrao {
         primary: true,
         primaryKeyConstraintName: 'PK_documento_padrao',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'nome', type: 'varchar', length: 50 })
     nome: string = '';

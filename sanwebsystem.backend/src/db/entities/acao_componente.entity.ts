@@ -1,30 +1,53 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryColumn,
+} from 'typeorm';
 import { Acao } from './acao.entity';
 import { Componente } from './componente.entity';
 import { GrupoAcessoAcao } from './grupo_acesso_acao.entity';
 
 @Entity('acao_componente', { schema: 'sanweb_maindb' })
 export class AcaoComponente {
-    @PrimaryColumn({ name: 'PK_acao_componente' })
-    @Column({ name: 'componente_id', type: 'bigint' })
-    componenteId: number = 0;
+    @PrimaryColumn({
+        name: 'componente_ID',
+        type: 'bigint',
+        primary: true,
+        primaryKeyConstraintName: 'PK_acao_componente',
+    })
+    componente_ID: number = 0;
 
-    @PrimaryColumn({ name: 'PK_acao_componente' })
-    @Column({ name: 'acao_id', type: 'bigint' })
-    acaoId: number = 0;
+    @PrimaryColumn({
+        name: 'acao_ID',
+        type: 'bigint',
+        primary: true,
+        primaryKeyConstraintName: 'PK_acao_componente',
+    })
+    acao_ID: number = 0;
 
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
-    @ManyToOne(() => Componente, (componente) => componente.acaoComponente)
-    @JoinColumn({ name: 'componente_id', referencedColumnName: 'id' })
+    @ManyToOne(() => Componente)
+    @JoinColumn({
+        name: 'componente_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_acao_componente_componente_ID',
+    })
     componente?: Promise<Componente>;
 
-    @ManyToOne(() => Acao, (acao) => acao.acaoComponente)
-    @JoinColumn({ name: 'acao_id', referencedColumnName: 'id' })
+    @ManyToOne(() => Acao)
+    @JoinColumn({
+        name: 'acao_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_acao_componente_acao_ID',
+    })
     acao?: Promise<Acao>;
 
-    @ManyToOne(
+    @OneToMany(
         () => GrupoAcessoAcao,
         (grupoAcessoAcao) => grupoAcessoAcao.acaoComponente,
     )

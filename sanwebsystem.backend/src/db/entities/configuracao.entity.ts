@@ -13,7 +13,7 @@ export class Configuracao {
         primary: true,
         primaryKeyConstraintName: 'PK_configuracao',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'email_remetente', type: 'varchar', length: 256 })
     emailRemetente: string = '';

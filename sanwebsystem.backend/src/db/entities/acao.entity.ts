@@ -9,7 +9,7 @@ export class Acao {
         primary: true,
         primaryKeyConstraintName: 'PK_acao',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'nome', type: 'varchar', length: 50 })
     nome: string = '';

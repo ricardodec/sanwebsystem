@@ -21,10 +21,10 @@ export class Pessoa {
         primary: true,
         primaryKeyConstraintName: 'PK_pessoa',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'parceiro_ID', type: 'bigint', nullable: true })
-    parceiroId?: number | null = null;
+    parceiro_ID?: number | null = null;
 
     @Column({ name: 'cnpj_cpf', type: 'varchar', length: 14 })
     cnpjCpf: string = '';

@@ -10,7 +10,7 @@ export class ModuloComponente {
         primary: true,
         primaryKeyConstraintName: 'PK_modulo_componente',
     })
-    moduloId: number = 0;
+    modulo_ID: number = 0;
 
     @Column({
         name: 'componente_ID',
@@ -18,16 +18,24 @@ export class ModuloComponente {
         primary: true,
         primaryKeyConstraintName: 'PK_modulo_componente',
     })
-    componenteId: number = 0;
+    componente_ID: number = 0;
 
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
     @ManyToOne(() => Modulo, (modulo) => modulo.moduloComponente)
-    @JoinColumn({ name: 'modulo_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'modulo_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_modulo_componente_modulo_ID',
+    })
     modulo?: Promise<Modulo>;
 
     @ManyToOne(() => Componente, (componente) => componente.moduloComponente)
-    @JoinColumn({ name: 'componente_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'componente_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_modulo_componente_componente_ID',
+    })
     componente?: Promise<Componente>;
 }

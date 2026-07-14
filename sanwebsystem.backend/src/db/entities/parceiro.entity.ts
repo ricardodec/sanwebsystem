@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { GrupoAcesso } from './grupo_acesso.entity';
 import { ModuloParceiro } from './modulo_parceiro.entity';
 import { ParceiroUsuario } from './parceiro_usuario.entity';
-import { TipoPessoaRole } from './partner/pessoa.entity';
+import { TipoPessoaRole } from './tenant/pessoa.entity';
 
 export enum OperacaoRole {
     FACTORING = 0,
@@ -20,7 +20,7 @@ export class Parceiro {
         primary: true,
         primaryKeyConstraintName: 'PK_parceiro',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'cnpj_cpf', type: 'varchar', length: 14 })
     cnpjCpf: string = '';

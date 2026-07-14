@@ -19,10 +19,10 @@ export class PessoaEstadoCivil {
         primary: true,
         primaryKeyConstraintName: 'PK_pessoa_estado_civil',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'pessoa_ID', type: 'bigint' })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({
         name: 'estado_civil',
@@ -41,10 +41,11 @@ export class PessoaEstadoCivil {
     @Column({ name: 'data_fim', type: 'date', nullable: true })
     dataFim?: Date | null = null;
 
-    @ManyToOne(
-        () => PessoaNatural,
-        (pessoaNatural) => pessoaNatural.pessoaEstadoCivil,
-    )
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'pessoa_ID' })
+    @ManyToOne(() => PessoaNatural)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'pessoa_ID',
+        foreignKeyConstraintName: 'FK_pessoa_estado_civil_pessoa_ID',
+    })
     pessoaNatural?: Promise<PessoaNatural>;
 }

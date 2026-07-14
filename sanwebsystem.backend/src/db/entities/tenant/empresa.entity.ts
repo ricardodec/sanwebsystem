@@ -18,7 +18,7 @@ export class Empresa {
         primary: true,
         primaryKeyConstraintName: 'PK_empresa',
     })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({ name: 'nome_fantasia', type: 'varchar', length: 60 })
     nomeFantasia: string = '';
@@ -47,13 +47,17 @@ export class Empresa {
         type: 'bigint',
         nullable: true,
     })
-    grupoEconomicoId?: number | null = null;
+    grupoEconomico_ID?: number | null = null;
 
     @Column({ name: 'dados_json', type: 'json', nullable: true })
     dadosJson?: string | null = null;
 
-    @OneToOne(() => Pessoa, (pessoa) => pessoa.pessoaNatural)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @OneToOne(() => Pessoa)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_empresa_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 
     @OneToMany(
@@ -65,10 +69,11 @@ export class Empresa {
     )
     representacoes?: Promise<Representante[]>;
 
-    @ManyToOne(
-        () => GrupoEconomico,
-        (grupoEconomico) => grupoEconomico.empresas,
-    )
-    @JoinColumn({ name: 'grupo_economico_ID', referencedColumnName: 'ID' })
+    @ManyToOne(() => GrupoEconomico)
+    @JoinColumn({
+        name: 'grupo_economico_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_empresa_grupo_economico_ID',
+    })
     grupoEconomico?: Promise<GrupoEconomico>;
 }

@@ -58,7 +58,7 @@ export class UsuarioService {
 
     async findOne(id: number): Promise<ResponseUsuarioDto | null> {
         const usuario = await this.usuarioRepository.findOne({
-            where: { id },
+            where: { ID: id },
             relations: ['historicoSenha', 'parceiroUsuario'],
         });
 
@@ -80,11 +80,10 @@ export class UsuarioService {
         const hash = await this.hashingService.hash(usuarioDto.senha || '');
 
         const usuario = await this.usuarioRepository.save({
-            id: Number(SnowflakeId().generate()),
+            ID: Number(SnowflakeId().generate()),
             login: usuarioDto.login || '',
             dataSenha: new Date(),
             senha: hash.passwordHashed,
-            salt: hash.salt,
             nome: usuarioDto.nome || '',
             email: usuarioDto.email || '',
             trocarSenha: true,
@@ -105,11 +104,10 @@ export class UsuarioService {
         }
 
         await this.historicoSenhaRepository.save({
-            id: Number(SnowflakeId().generate()),
-            usuarioId: usuario.id,
+            ID: Number(SnowflakeId().generate()),
+            usuario_ID: usuario.ID,
             dataSenha: usuario.dataSenha,
             senha: hash.passwordHashed,
-            salt: hash.salt,
             usuario: Promise.resolve(usuario),
         } as HistoricoSenha);
 
@@ -154,7 +152,7 @@ export class UsuarioService {
         id: number,
         tokenPayLoadDto: TokenPayloadDto,
     ): Promise<string | null> {
-        const usuario = await this.usuarioRepository.findOneBy({ id });
+        const usuario = await this.usuarioRepository.findOneBy({ ID: id });
 
         if (!usuario) {
             return 'Usuário não encontrado';

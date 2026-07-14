@@ -17,10 +17,10 @@ export class Telefone {
         primary: true,
         primaryKeyConstraintName: 'PK_telefone',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'pessoa_ID', type: 'bigint' })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({
         name: 'tipo_telefone',
@@ -52,6 +52,10 @@ export class Telefone {
     ativo: boolean = true;
 
     @ManyToOne(() => Pessoa, (pessoa) => pessoa.telefones)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_telefone_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 }

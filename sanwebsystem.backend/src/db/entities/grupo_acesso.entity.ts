@@ -11,10 +11,10 @@ export class GrupoAcesso {
         primary: true,
         primaryKeyConstraintName: 'PK_grupo_acesso',
     })
-    id: number = 0;
+    ID: number = 0;
 
-    @Column({ name: 'parceiro_id', type: 'bigint', nullable: true })
-    parceiroId?: number | null = null;
+    @Column({ name: 'parceiro_ID', type: 'bigint', nullable: true })
+    parceiro_ID?: number | null = null;
 
     @Column({ name: 'nome', type: 'varchar', length: 50 })
     nome: string = '';
@@ -23,7 +23,11 @@ export class GrupoAcesso {
     ativo: boolean = true;
 
     @ManyToOne(() => Parceiro, (parceiro) => parceiro.grupoAcesso)
-    @JoinColumn({ name: 'parceiro_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'parceiro_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_grupo_acesso_parceiro_ID',
+    })
     parceiro?: Promise<Parceiro>;
 
     @OneToMany(

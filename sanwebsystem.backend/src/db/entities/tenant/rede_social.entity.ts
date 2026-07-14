@@ -20,10 +20,10 @@ export class RedeSocial {
         primary: true,
         primaryKeyConstraintName: 'PK_rede_social',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'pessoa_ID', type: 'bigint' })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({
         name: 'tipo_rede_social',
@@ -39,7 +39,11 @@ export class RedeSocial {
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
-    @ManyToOne(() => Pessoa, (pessoa) => pessoa.redeSociais)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @ManyToOne(() => Pessoa)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_rede_social_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 }

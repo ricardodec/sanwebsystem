@@ -40,14 +40,15 @@ import { AppService } from './app.service';
                 const { database } = new AppConfig(configService).getParams();
 
                 return {
-                    type: 'mysql',
+                    type: database.type,
                     host: database.host,
                     port: database.port,
                     username: database.username,
                     password: database.password,
                     database: database.name,
-                    autoLoadEntities: database.autoLoadEntities,
+                    autoLoadEntities: true,
                     synchronize: database.synchronize,
+                    poolSize: 5,
                 };
             },
         }),

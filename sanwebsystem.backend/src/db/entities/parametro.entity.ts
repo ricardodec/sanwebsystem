@@ -8,7 +8,7 @@ export class Parametro {
         primary: true,
         primaryKeyConstraintName: 'PK_parametro',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'ciclo_senha', type: 'integer' })
     cicloSenha: number = 0;

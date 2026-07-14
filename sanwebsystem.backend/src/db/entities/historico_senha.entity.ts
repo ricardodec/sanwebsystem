@@ -9,10 +9,10 @@ export class HistoricoSenha {
         primary: true,
         primaryKeyConstraintName: 'PK_historico_senha',
     })
-    id: number = 0;
+    ID: number = 0;
 
-    @Column({ name: 'usuario_id', type: 'bigint' })
-    usuarioId: number = 0;
+    @Column({ name: 'usuario_ID', type: 'bigint' })
+    usuario_ID: number = 0;
 
     @Column({ name: 'data_senha', type: 'date' })
     dataSenha: Date = new Date();
@@ -20,10 +20,11 @@ export class HistoricoSenha {
     @Column({ name: 'senha', type: 'varchar', length: 255, nullable: true })
     senha?: string | null = null;
 
-    @Column({ name: 'salt', type: 'varchar', length: 255, nullable: true })
-    salt?: string | null = null;
-
     @ManyToOne(() => Usuario, (usuario) => usuario.historicoSenha)
-    @JoinColumn({ name: 'usuario_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'usuario_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_historico_senha_usuario_ID',
+    })
     usuario?: Promise<Usuario>;
 }

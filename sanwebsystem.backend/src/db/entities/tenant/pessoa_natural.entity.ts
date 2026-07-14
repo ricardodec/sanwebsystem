@@ -11,7 +11,7 @@ export class PessoaNatural {
         primary: true,
         primaryKeyConstraintName: 'PK_pessoa_natural',
     })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({ name: 'data_nascimento', type: 'date', nullable: true })
     dataNascimento?: Date | null = null;
@@ -22,8 +22,12 @@ export class PessoaNatural {
     @Column({ name: 'dados_json', type: 'json', nullable: true })
     dadosJson?: string | null = null;
 
-    @OneToOne(() => Pessoa, (pessoa) => pessoa.pessoaNatural)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @OneToOne(() => Pessoa)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_pessoa_natural_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 
     @OneToMany(() => PessoaEstadoCivil, (endereco) => endereco.pessoaNatural, {

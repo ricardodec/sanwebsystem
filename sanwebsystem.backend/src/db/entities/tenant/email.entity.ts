@@ -9,10 +9,10 @@ export class Email {
         primary: true,
         primaryKeyConstraintName: 'PK_email',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'pessoa_ID', type: 'bigint' })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({ name: 'endereco', type: 'varchar', length: 256 })
     endereco: string = '';
@@ -20,7 +20,11 @@ export class Email {
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
-    @ManyToOne(() => Pessoa, (pessoa) => pessoa.emails)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @ManyToOne(() => Pessoa)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_email_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 }

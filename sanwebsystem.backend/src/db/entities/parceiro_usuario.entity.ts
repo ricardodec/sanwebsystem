@@ -19,7 +19,7 @@ export class ParceiroUsuario {
         primary: true,
         primaryKeyConstraintName: 'PK_parceiro_usuario',
     })
-    parceiroId: number = 0;
+    parceiro_ID: number = 0;
 
     @Column({
         name: 'usuario_ID',
@@ -27,7 +27,7 @@ export class ParceiroUsuario {
         primary: true,
         primaryKeyConstraintName: 'PK_parceiro_usuario',
     })
-    usuarioId: number = 0;
+    usuario_ID: number = 0;
 
     @Column({
         name: 'perfil',
@@ -37,9 +37,8 @@ export class ParceiroUsuario {
     })
     perfil: PerfilRole = PerfilRole.OUTRO;
 
-    @JoinColumn({ name: 'grupo_acesso_id', referencedColumnName: 'id' })
-    @Column({ name: 'grupo_acesso_id', type: 'bigint', nullable: true })
-    grupoAcessoId?: number | null = null;
+    @Column({ name: 'grupo_acesso_ID', type: 'bigint', nullable: true })
+    grupo_acesso_ID?: number | null = null;
 
     @Column({ name: 'eh_responsavel', type: 'boolean', default: false })
     ehResponsavel: boolean = false;
@@ -48,13 +47,26 @@ export class ParceiroUsuario {
     ativo: boolean = true;
 
     @ManyToOne(() => Usuario, (usuario) => usuario.parceiroUsuario)
-    @JoinColumn({ name: 'usuario_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'usuario_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_parceiro_usuario_usuario_ID',
+    })
     usuario?: Promise<Usuario>;
 
     @ManyToOne(() => Parceiro, (parceiro) => parceiro.parceiroUsuario)
-    @JoinColumn({ name: 'parceiro_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'parceiro_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_parceiro_usuario_parceiro_ID',
+    })
     parceiro?: Promise<Parceiro>;
 
     @ManyToOne(() => GrupoAcesso, (grupoAcesso) => grupoAcesso.parceiroUsuario)
+    @JoinColumn({
+        name: 'grupo_acesso_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_parceiro_usuario_grupo_acesso_ID',
+    })
     grupoAcesso?: Promise<GrupoAcesso>;
 }

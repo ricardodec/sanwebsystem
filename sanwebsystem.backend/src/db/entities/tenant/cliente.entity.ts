@@ -17,7 +17,7 @@ export class Cliente {
         primary: true,
         primaryKeyConstraintName: 'PK_cliente',
     })
-    pessoaId: number = 0;
+    pessoa_ID: number = 0;
 
     @Column({
         name: 'perfil',
@@ -30,7 +30,11 @@ export class Cliente {
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
-    @OneToOne(() => Pessoa, (pessoa) => pessoa.cliente)
-    @JoinColumn({ name: 'pessoa_ID', referencedColumnName: 'ID' })
+    @OneToOne(() => Pessoa)
+    @JoinColumn({
+        name: 'pessoa_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_cliente_pessoa_ID',
+    })
     pessoa?: Promise<Pessoa>;
 }

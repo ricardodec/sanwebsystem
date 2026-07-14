@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Empresa } from './empresa.entity';
 import { PessoaNatural } from './pessoa_natural.entity';
 
@@ -16,21 +16,21 @@ export enum FuncaoRole {
 
 @Entity('representante')
 export class Representante {
-    @Column({
+    @PrimaryColumn({
         name: 'representada_ID',
         type: 'bigint',
         primary: true,
         primaryKeyConstraintName: 'PK_representante',
     })
-    representadaId: number = 0;
+    representada_ID: number = 0;
 
-    @Column({
+    @PrimaryColumn({
         name: 'representante_ID',
         type: 'bigint',
         primary: true,
         primaryKeyConstraintName: 'PK_representante',
     })
-    representanteId: number = 0;
+    representante_ID: number = 0;
 
     @Column({
         name: 'funcao',
@@ -57,14 +57,19 @@ export class Representante {
     @Column({ name: 'ativo', type: 'boolean', default: true })
     ativo: boolean = true;
 
-    @ManyToOne(() => Empresa, (empresa) => empresa.representacoes)
-    @JoinColumn({ name: 'representada_ID', referencedColumnName: 'ID' })
+    @ManyToOne(() => Empresa)
+    @JoinColumn({
+        name: 'representada_ID',
+        referencedColumnName: 'pessoa_ID',
+        foreignKeyConstraintName: 'FK_representante_representada_ID',
+    })
     representada?: Promise<Empresa>;
 
-    @ManyToOne(
-        () => PessoaNatural,
-        (pessoaNatural) => pessoaNatural.representacoes,
-    )
-    @JoinColumn({ name: 'representante_ID', referencedColumnName: 'pessoa_ID' })
+    @ManyToOne(() => PessoaNatural)
+    @JoinColumn({
+        name: 'representante_ID',
+        referencedColumnName: 'pessoa_ID',
+        foreignKeyConstraintName: 'FK_representante_representante_ID',
+    })
     representante?: Promise<PessoaNatural>;
 }

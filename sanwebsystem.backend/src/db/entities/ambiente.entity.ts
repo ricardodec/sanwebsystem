@@ -10,7 +10,7 @@ export class Ambiente {
         primary: true,
         primaryKeyConstraintName: 'PK_ambiente',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'descricao', type: 'varchar', length: 50 })
     descricao: string = '';

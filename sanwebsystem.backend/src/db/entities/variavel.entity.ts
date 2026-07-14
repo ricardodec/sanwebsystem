@@ -8,7 +8,7 @@ export class Variavel {
         primary: true,
         primaryKeyConstraintName: 'PK_variavel',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'tag', type: 'varchar', length: 50 })
     tag: string = '';

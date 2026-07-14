@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 export type AppConfigType = {
     nodeEnv: string;
     appPort: number;
+    EncryptionKey: string;
     jwt: {
         secret: string;
         audience: string;
@@ -13,12 +14,12 @@ export type AppConfigType = {
         refreshTtl: number;
     };
     database: {
+        type: 'mysql' | 'mariadb';
         host: string;
         port: number;
         username: string;
         password: string;
         name: string;
-        autoLoadEntities: boolean;
         synchronize: boolean;
     };
     email: {
@@ -40,12 +41,13 @@ export class AppConfig {
         return Joi.object({
             NODE_ENV: [Joi.string()],
             APP_PORT: [Joi.number()],
+            ENCRYPTION_KEY: [Joi.string()],
+            DATABASE_TYPE: [Joi.required(), Joi.string()],
             DATABASE_HOST: [Joi.required(), Joi.string()],
             DATABASE_PORT: [Joi.required(), Joi.number()],
             DATABASE_USERNAME: [Joi.required(), Joi.string()],
             DATABASE_PASSWORD: [Joi.required(), Joi.string()],
             DATABASE_NAME: [Joi.required(), Joi.string()],
-            DATABASE_AUTOLOADENTITIES: Joi.boolean().default(true),
             DATABASE_SYNCHRONIZE: Joi.boolean().default(false),
             JWT_TOKEN: [Joi.required(), Joi.string()],
             JWT_AUDIENCE: [Joi.required(), Joi.string()],
@@ -64,6 +66,7 @@ export class AppConfig {
         return {
             nodeEnv: process.env.NODE_ENV ?? 'development',
             appPort: Number(process.env.APP_PORT ?? '3030'),
+            EncryptionKey: process.env.ENCRYPTION_KEY ?? '',
             jwt: {
                 secret: process.env.JWT_SECRET ?? '',
                 audience: process.env.JWT_AUDIENCE ?? '',
@@ -72,14 +75,12 @@ export class AppConfig {
                 refreshTtl: Number(process.env.JWT_REFRESH_TTL ?? '86400'),
             },
             database: {
+                type: process.env.TYPE as 'mysql' | 'mariadb',
                 host: process.env.DATABASE_HOST as string,
                 port: Number(process.env.DATABASE_PORT ?? '5432'),
                 username: process.env.DATABASE_USERNAME as string,
                 password: process.env.DATABASE_PASSWORD as string,
                 name: process.env.DATABASE_NAME as string,
-                autoLoadEntities: Boolean(
-                    process.env.DATABASE_AUTOLOADENTITIES,
-                ),
                 synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE),
             },
             email: {
@@ -96,6 +97,8 @@ export class AppConfig {
         return {
             nodeEnv: this.configService.getOrThrow<string>('nodeEnv'),
             appPort: this.configService.get<number>('appPort') ?? 3030,
+            EncryptionKey:
+                this.configService.getOrThrow<string>('encryptionKey'),
             jwt: {
                 secret: this.configService.getOrThrow<string>('jwt.secret'),
                 audience: this.configService.getOrThrow<string>('jwt.audience'),
@@ -105,6 +108,9 @@ export class AppConfig {
                     this.configService.getOrThrow<number>('jwt.refreshTtl'),
             },
             database: {
+                type: this.configService.getOrThrow<string>('database.type') as
+                    | 'mysql'
+                    | 'mariadb',
                 host: this.configService.getOrThrow<string>('database.host'),
                 port: this.configService.getOrThrow<number>('database.port'),
                 username:
@@ -112,10 +118,6 @@ export class AppConfig {
                 password:
                     this.configService.getOrThrow<string>('database.password'),
                 name: this.configService.getOrThrow<string>('database.name'),
-                autoLoadEntities:
-                    this.configService.get<boolean>(
-                        'database.autoLoadEntities',
-                    ) ?? true,
                 synchronize:
                     this.configService.get<boolean>('database.synchronize') ??
                     false,

@@ -19,10 +19,10 @@ export class Padrao {
         primary: true,
         primaryKeyConstraintName: 'PK_padrao',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'parceiro_ID', type: 'bigint' })
-    parceiroId: number = 0;
+    parceiro_ID: number = 0;
 
     @Column({ name: 'fator_mes', type: 'decimal', precision: 7, scale: 4 })
     fatorMes: number = 0;

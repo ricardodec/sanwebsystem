@@ -279,7 +279,6 @@ export class AuthService {
                     usuario.dataSenha = new Date();
                     usuario.trocarSenha = false;
                     usuario.senha = hash.passwordHashed;
-                    usuario.salt = hash.salt;
 
                     await this.dataSource.transaction(async (manager) => {
                         const usuarioRepository_ =

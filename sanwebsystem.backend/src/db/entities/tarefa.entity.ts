@@ -15,10 +15,10 @@ export class Tarefa {
         primary: true,
         primaryKeyConstraintName: 'PK_tarefa',
     })
-    id: number = 0;
+    ID: number = 0;
 
-    @Column({ name: 'ambiente_id', type: 'bigint' })
-    ambienteId: number = 0;
+    @Column({ name: 'ambiente_ID', type: 'bigint' })
+    ambiente_ID: number = 0;
 
     @Column({ name: 'nome', type: 'varchar', length: 50 })
     nome: string = '';
@@ -44,6 +44,10 @@ export class Tarefa {
     status?: TarefaStatusRole;
 
     @ManyToOne(() => Ambiente, (ambiente) => ambiente.tarefas)
-    @JoinColumn({ name: 'ambiente_id', referencedColumnName: 'id' })
+    @JoinColumn({
+        name: 'ambiente_ID',
+        referencedColumnName: 'ID',
+        foreignKeyConstraintName: 'FK_tarefa_ambiente_ID',
+    })
     ambiente?: Promise<Ambiente>;
 }

@@ -24,7 +24,7 @@ export class Usuario {
         primary: true,
         primaryKeyConstraintName: 'PK_usuario',
     })
-    id: number = 0;
+    ID: number = 0;
 
     @Column({ name: 'login', type: 'varchar', length: 50 })
     login: string = '';
@@ -34,9 +34,6 @@ export class Usuario {
 
     @Column({ name: 'senha', type: 'varchar', length: 255, nullable: true })
     senha?: string;
-
-    @Column({ name: 'salt', type: 'varchar', length: 255, nullable: true })
-    salt?: string;
 
     @Column({ name: 'trocar_senha', type: 'boolean', default: false })
     trocarSenha: boolean = false;
